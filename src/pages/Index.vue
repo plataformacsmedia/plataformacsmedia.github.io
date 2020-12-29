@@ -41,7 +41,7 @@
         transition-show="flip-right"
         transition-hide="flip-left"
         content-class="bg-primary"
-        :content-style="{ color: '#ffffff' }"
+        :content-style="{ color: '#fff' }"
         >Clique para assistir</q-tooltip
       >
       <div class="center">
