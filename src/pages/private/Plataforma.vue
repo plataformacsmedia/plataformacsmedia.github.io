@@ -1,15 +1,7 @@
 <template>
   <q-page-container>
-    <div class="text-right q-mt-md q-mr-md fixed">
-      <q-btn flat color="primary">Entrar</q-btn>
-    </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <q-img src="images/logo.webp"></q-img>
-      </div>
-    </div>
     <q-page class="flex flex-center">
-      <video-player
+      <!-- <video-player
         class="video-player-box"
         ref="videoPlayer"
         :options="playerOptions"
@@ -27,19 +19,19 @@
         @statechanged="playerStateChanged($event)"
         @ready="playerReadied"
       >
-      </video-player>
+      </video-player> -->
     </q-page>
   </q-page-container>
 </template>
 
 <script>
 import 'video.js/dist/video-js.css'
-import { videoPlayer } from 'vue-video-player'
+// import { videoPlayer } from 'vue-video-player'
 export default {
   name: 'PageIndex',
-  components: {
-    videoPlayer,
-  },
+  // components: {
+  //   videoPlayer,
+  // },
   data() {
     return {
       playerOptions: {

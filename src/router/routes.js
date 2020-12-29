@@ -13,11 +13,17 @@ const routes = [
         ]
       },
       {
-        path: 'plataforma',
+        path: '/plataforma',
         component: () => import('layouts/Private.vue'),
         meta: { requiresAuth: true },
         children: [
-          { name: 'testprivate', path: '', component: () => import('pages/TestPrivate.vue'), meta: { requiresAuth: true } }
+          {
+            name: 'plataforma',
+            path: '',
+            component: () => import('pages/private/Plataforma.vue'),
+            meta: { requiresAuth: true },
+          },
+          { name: 'curso', path: 'curso/:slug', component: () => import('pages/private/Curso.vue'), meta: { requiresAuth: true } }
         ]
       }
     ]

@@ -19,18 +19,32 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      bordered
-      content-class="bg-grey-1"
-      width="200"
+      content-class="bg-primary"
+      :width="200"
     >
       <q-list>
-        <q-item-label header class="text-grey-8"> Meus Cursos </q-item-label>
+        <q-item-label header class="bg-grey-1 text-black">
+          Meus Cursos
+        </q-item-label>
         <q-item
-          v-for="(course, key) in courses"
+          v-for="(course, key) in userCourses"
           clickable
-          tag="a"
-          target="_self"
-          :href="`plataforma/curso/${course.slug}`"
+          :to="`/plataforma/curso/${course.slug}`"
+          :key="key"
+        >
+          <q-item-section>
+            <q-item-label>{{ course.name }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+      <q-list class="q-mt-md">
+        <q-item-label header class="bg-grey-1 text-black">
+          Outros Cursos
+        </q-item-label>
+        <q-item
+          v-for="(course, key) in otherCourses"
+          clickable
+          :to="`/plataforma/curso/${course.slug}`"
           :key="key"
         >
           <q-item-section>
@@ -54,7 +68,8 @@ export default {
   data() {
     return {
       leftDrawerOpen: false,
-      courses: [],
+      userCourses: [],
+      otherCourses: [],
     }
   },
   methods: {
@@ -67,34 +82,45 @@ export default {
   },
   async mounted() {
     this.$q.loading.show()
-    const courses = []
+    const otherCourses = []
+    const userCourses = []
     await this.$db()
       .collection('users')
       .where('uuid', '==', localStorage.getItem('csm-user-uuid'))
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
+          const courses = doc.data().courses
           // doc.data() is never undefined for query doc snapshots
-          doc.data().courses.map(course => {
-            courses.push(course)
+          courses.map(course => {
+            userCourses.push(course)
           })
         })
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error)
       })
-    courses.map(c => {})
-    this.courses = await Promise.all(
-      courses.map(async course => {
-        return await this.$db()
-          .collection('cursos')
-          .doc(course)
-          .get()
-          .then(course => {
-            return course.data()
-          })
+    await this.$db()
+      .collection('cursos')
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          otherCourses.push(doc.data())
+        })
       })
-    )
+      .catch(function (error) {
+        console.log('Error getting documents: ', error)
+      })
+
+    this.courses = otherCourses.map(course => {
+      console.log(course.docRef)
+      if (userCourses.find(x => x === course.docRef)) {
+        console.log('achou')
+        this.userCourses.push(course)
+      } else this.otherCourses.push(course)
+    })
+
     this.$q.loading.hide()
   },
 }

@@ -203,15 +203,9 @@
     </section>
     <div style="height: 1000px"></div>
     <q-dialog v-model="videoModal">
-      <div style="max-width: 80%">
+      <div style="max-width: 90%">
         <div class="q-video video">
-          <iframe
-            width="560"
-            height="315"
-            :src="videoModalUrl"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
+          <iframe :src="videoModalUrl" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
     </q-dialog>
@@ -314,6 +308,12 @@ export default {
 .video {
   width: 960px;
   height: 540px;
+}
+@media screen and (max-width: 600px) {
+  .video {
+    width: 340px;
+    height: auto;
+  }
 }
 .course-cover {
   height: 400px;
